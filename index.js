@@ -26,6 +26,16 @@ let persons = [
   }
 ]
 
+const generateId = () => {
+  const randomId = Math.floor(Math.random() * 100000) + 1
+  return randomId
+}
+
+const containsName = (name) => {
+  return persons.some(person =>
+    person.name.toLowerCase().trim() === name.toLowerCase().trim())
+}
+
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
@@ -55,10 +65,29 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const randomId = Math.floor(Math.random() * 100000) + 1;
-  
-  const person = request.body
-  person.id = randomId
+  const body = request.body
+
+  if (!body.name) {
+    return response.status(400).json({
+      error: 'No name provided. Name is required!'
+    })
+  }
+  else if (!body.number) {
+    return response.status(400).json({
+      error: 'No number provided. Number is required!'
+    })
+  }
+  else if (containsName(body.name)) {
+    return response.status(400).json({
+      error: 'Name is reserved. Unique name is required!'
+    })
+  }
+
+  const person = {
+    id: generateId(),
+    name: body.name.trim(),
+    number: body.number.trim()
+  }
 
   persons = persons.concat(person)
 
