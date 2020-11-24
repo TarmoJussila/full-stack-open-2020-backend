@@ -16,8 +16,7 @@ let persons = [
     id: 3,
     name: "Dan Abramov",
     number: "050-1284096",
-  }
-  ,
+  },
   {
     id: 4,
     name: "Mary Poppendick",
@@ -27,6 +26,15 @@ let persons = [
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
+})
+
+app.get('/info', (request, response) => {
+  const personAmount = persons.length
+  const date = new Date();
+  const info = `<p>The phonebook backend contains info of ${personAmount} people.</p>
+    <p>Backend time: ${date}</p>`
+
+  response.send(info)
 })
 
 app.get('/api/persons', (request, response) => {
