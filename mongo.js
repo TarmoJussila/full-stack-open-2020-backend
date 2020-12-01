@@ -5,7 +5,7 @@
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
-  console.log('Provide password as argument!')
+  console.log('Provide password as an argument!')
   process.exit(1)
 }
 
@@ -36,12 +36,16 @@ if (process.argv.length === 3) {
 }
 else if (process.argv.length === 5) {
   const person = new Person({
-    name: 'Test Person 2',
-    number: '123-456-7689 0'
+    name: name,
+    number: number
   })
   
   person.save().then(result => {
     console.log(`Succesfully added ${result.name} ${result.number} to the phonebook database.`)
     mongoose.connection.close()
   })
+}
+else {
+  console.log("Invalid amount of arguments!");
+  mongoose.connection.close()
 }
