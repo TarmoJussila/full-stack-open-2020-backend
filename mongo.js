@@ -1,7 +1,3 @@
-// mongodb+srv://fullstack:<password>@fullstack-cluster.axkrj.mongodb.net/<dbname>?retryWrites=true&w=majority
-// Replace <password> with the password for the fullstack user.
-// Replace <dbname> with the name of the database that connections will use by default.
-
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
