@@ -20,13 +20,15 @@ app.get('/', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-  Person.find({}).then(persons => {
-    const personAmount = persons.length
-    const date = new Date();
-    const info = `<p>The phonebook backend contains info of ${personAmount} people.</p>
-      <p>Backend time: ${date}</p>`
-    response.send(info)
-  })
+  Person.find({})
+    .then(persons => {
+      const personAmount = persons.length
+      const date = new Date();
+      const info = `<p>The phonebook backend contains info of ${personAmount} people.</p>
+        <p>Backend time: ${date}</p>`
+      response.send(info)
+    })
+    .catch(error => next(error))
 })
 
 app.get('/api/persons', (request, response) => {
