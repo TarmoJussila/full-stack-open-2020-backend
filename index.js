@@ -15,11 +15,6 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 
-/*const containsName = (name) => {
-  return persons.some(person =>
-    person.name.toLowerCase().trim() === name.toLowerCase().trim())
-}*/
-
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
@@ -35,9 +30,11 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons)
-  })
+  Person.find({})
+    .then(persons => {
+      response.json(persons)
+    })
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -65,20 +62,17 @@ app.post('/api/persons', (request, response) => {
       error: 'No number provided. Number is required!'
     })
   }
-  /*else if (containsName(body.name)) { // TODO
-    return response.status(400).json({
-      error: 'Name is reserved. Unique name is required!'
-    })
-  }*/
 
   const person = new Person({
     name: body.name.trim(),
     number: body.number.trim()
   })
 
-  person.save().then(savedPerson => {
-    response.json(savedPerson)
-  })
+  person.save()
+    .then(savedPerson => {
+      response.json(savedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
