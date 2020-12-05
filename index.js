@@ -4,7 +4,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const Person = require('./models/person')
 
-morgan.token('body', function (request, response) {
+morgan.token('body', function (request) {
   return JSON.stringify(request.body)
 })
 
@@ -13,7 +13,7 @@ const app = express()
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
-app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
+app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'))
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -23,7 +23,7 @@ app.get('/info', (request, response, next) => {
   Person.find({})
     .then(persons => {
       const personAmount = persons.length
-      const date = new Date();
+      const date = new Date()
       const info = `<p>The phonebook backend contains info of ${personAmount} people.</p>
         <p>Backend time: ${date}</p>`
       response.send(info)
@@ -68,7 +68,7 @@ app.post('/api/persons', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))

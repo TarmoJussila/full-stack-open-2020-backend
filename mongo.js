@@ -35,13 +35,13 @@ else if (process.argv.length === 5) {
     name: name,
     number: number
   })
-  
+
   person.save().then(result => {
     console.log(`Succesfully added ${result.name} ${result.number} to the phonebook database.`)
     mongoose.connection.close()
   })
 }
 else {
-  console.log("Invalid amount of arguments!");
+  console.log('Invalid amount of arguments!')
   mongoose.connection.close()
 }
