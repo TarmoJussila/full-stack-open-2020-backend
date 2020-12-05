@@ -54,17 +54,6 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
-  if (body.name === undefined) {
-    return response.status(400).json({
-      error: 'No name provided. Name is required!'
-    })
-  }
-  else if (body.number === undefined) {
-    return response.status(400).json({
-      error: 'No number provided. Number is required!'
-    })
-  }
-
   const person = new Person({
     name: body.name.trim(),
     number: body.number.trim()
@@ -109,6 +98,8 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'Malformed id syntax!' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
   next(error)
 }
